@@ -1,0 +1,1200 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compte Rendu d'Incident ou d'Accident - FFCAM</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           VARIABLES & THÈMES
+           ========================================================================== */
+        :root {
+            /* FFCAM Colors */
+            --ffcam-blue: #0055A4;
+            --ffcam-blue-hover: #004485;
+            --ffcam-light: #3b82f6;
+            --ffcam-red: #E2001A;
+            
+            /* Light Theme (Slate) */
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-input: #f1f5f9;
+            --bg-table-header: #f8fafc;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --border-input: transparent;
+            --ring-color: rgba(59, 130, 246, 0.2);
+            
+            /* Shadows & Radii */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --shadow-card: 0 4px 20px -2px rgba(15, 23, 42, 0.05);
+            --shadow-float: 0 10px 25px -5px rgba(15, 23, 42, 0.1);
+            
+            --transition-fast: 0.15s ease-out;
+            --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.dark-mode {
+            /* Dark Theme (Deep Slate) */
+            --bg-page: #0f172a;
+            --bg-card: #1e293b;
+            --bg-input: #0f172a;
+            --bg-table-header: #0f172a;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --border-input: #334155;
+            --ring-color: rgba(59, 130, 246, 0.3);
+            --shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.3);
+            --shadow-float: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* ==========================================================================
+           RESET & BASE
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg-page);
+            background-image: radial-gradient(circle at top center, rgba(0, 85, 164, 0.03) 0%, transparent 100%);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding-bottom: 4rem;
+            transition: background-color var(--transition-smooth), color var(--transition-smooth);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* ==========================================================================
+           HEADER FLOTTANT & LOGO
+           ========================================================================== */
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(var(--bg-page), 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            margin-bottom: 2.5rem;
+            transition: all var(--transition-smooth);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Logo Image Style */
+        .brand-logo {
+            height: 44px;
+            width: auto;
+            max-width: 140px;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+
+        /* Sécurité Dark Mode : fond blanc au cas où l'image est un PNG avec du texte noir */
+        body.dark-mode .brand-logo {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 2px;
+            border-radius: 6px;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+
+        .brand-text-main {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--ffcam-blue);
+            letter-spacing: -0.5px;
+        }
+        body.dark-mode .brand-text-main { color: #60a5fa; }
+
+        .brand-text-sub {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        /* TYPOGRAPHY */
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+            background: linear-gradient(135deg, var(--ffcam-blue), var(--ffcam-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        body.dark-mode h1 {
+            background: linear-gradient(135deg, #60a5fa, #93c5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ==========================================================================
+           UI COMPONENTS
+           ========================================================================== */
+        
+        /* Boutons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.6rem 1.25rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            border: none;
+            gap: 0.5rem;
+            outline: none;
+        }
+
+        .btn:focus-visible {
+            box-shadow: 0 0 0 3px var(--ring-color);
+        }
+
+        .btn-primary {
+            background-color: var(--ffcam-blue);
+            color: white;
+            box-shadow: 0 2px 4px rgba(0, 85, 164, 0.2);
+        }
+        .btn-primary:hover {
+            background-color: var(--ffcam-blue-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 85, 164, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+        .btn-secondary:hover {
+            background-color: var(--bg-input);
+        }
+
+        .btn-expand {
+            position: absolute;
+            top: -34px;
+            right: 0;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition-fast);
+        }
+        .btn-expand:hover {
+            background-color: var(--border-color);
+            color: var(--ffcam-blue);
+        }
+        body.dark-mode .btn-expand:hover { color: var(--ffcam-light); }
+
+        /* Intro text */
+        .intro-text {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            background: var(--bg-card);
+            padding: 1.5rem 2rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+        .intro-text::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--ffcam-blue);
+        }
+        .intro-text p { margin-bottom: 0.75rem; }
+        .intro-text p:last-child { margin-bottom: 0; }
+        .intro-text a {
+            color: var(--ffcam-blue);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        body.dark-mode .intro-text a { color: var(--ffcam-light); }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-card);
+            position: relative;
+            transition: all var(--transition-smooth);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .badge {
+            background: linear-gradient(135deg, var(--ffcam-blue), var(--ffcam-light));
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.1rem;
+            margin-right: 1rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(0, 85, 164, 0.2);
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            color: var(--text-main);
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        /* Form Layout */
+        .form-group { margin-bottom: 1.75rem; }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Inputs */
+        label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .required-label::after {
+            content: " *";
+            color: var(--ffcam-red);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="date"] {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 1px solid var(--border-input);
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 0.95rem;
+            background-color: var(--bg-input);
+            color: var(--text-main);
+            transition: all var(--transition-fast);
+        }
+
+        input:focus {
+            outline: none;
+            background-color: var(--bg-card);
+            border-color: var(--ffcam-light);
+            box-shadow: 0 0 0 4px var(--ring-color);
+        }
+
+        /* Custom Radios */
+        .radio-group {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            height: 46px; 
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .radio-label input[type="radio"] {
+            opacity: 0;
+            position: absolute;
+        }
+
+        .radio-custom {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--text-muted);
+            border-radius: 50%;
+            display: inline-block;
+            position: relative;
+            transition: all var(--transition-fast);
+        }
+
+        .radio-label input[type="radio"]:checked ~ .radio-custom {
+            border-color: var(--ffcam-blue);
+        }
+
+        .radio-custom::after {
+            content: '';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background-color: var(--ffcam-blue);
+            transition: transform var(--transition-fast) cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        body.dark-mode .radio-label input[type="radio"]:checked ~ .radio-custom {
+            border-color: var(--ffcam-light);
+        }
+        body.dark-mode .radio-custom::after { background-color: var(--ffcam-light); }
+
+        .radio-label input[type="radio"]:checked ~ .radio-custom::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Content Editable */
+        .editable-wrapper {
+            position: relative;
+            margin-top: 2rem;
+        }
+
+        .content-editable {
+            width: 100%;
+            min-height: 100px;
+            max-height: 300px;
+            overflow-y: auto;
+            padding: 1rem;
+            border: 1px solid var(--border-input);
+            border-radius: var(--radius-md);
+            background-color: var(--bg-input);
+            color: var(--text-main);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            transition: all var(--transition-fast);
+        }
+
+        .content-editable:focus {
+            outline: none;
+            background-color: var(--bg-card);
+            border-color: var(--ffcam-light);
+            box-shadow: 0 0 0 4px var(--ring-color);
+        }
+
+        .content-editable[data-placeholder]:empty:before {
+            content: attr(data-placeholder);
+            color: var(--text-muted);
+            pointer-events: none;
+            opacity: 0.7;
+        }
+
+        /* Tables */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+        
+        th, td {
+            border-bottom: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            padding: 0.5rem;
+            text-align: left;
+        }
+        th:last-child, td:last-child { border-right: none; }
+        tr:last-child td { border-bottom: none; }
+
+        th {
+            background-color: var(--bg-table-header);
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            padding: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td input {
+            border: none !important;
+            padding: 0.75rem !important;
+            box-shadow: none !important;
+            background-color: transparent !important;
+            border-radius: 0;
+            width: 100%;
+        }
+        td input:focus {
+            background-color: var(--bg-input) !important;
+        }
+
+        /* ==========================================================================
+           MODALS & TOASTS
+           ========================================================================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all var(--transition-smooth);
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: var(--bg-card);
+            width: 90%;
+            max-width: 800px;
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-float);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            transform: translateY(20px) scale(0.98);
+            transition: all var(--transition-smooth);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-title {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: var(--ffcam-blue);
+        }
+        body.dark-mode .modal-title { color: var(--ffcam-light); }
+
+        .modal-textarea {
+            width: 100%;
+            height: 40vh;
+            min-height: 250px;
+            padding: 1.25rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            background-color: var(--bg-input);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+        .modal-textarea:focus {
+            outline: none;
+            background-color: var(--bg-card);
+            border-color: var(--ffcam-light);
+            box-shadow: 0 0 0 4px var(--ring-color);
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background-color: var(--text-main);
+            color: var(--bg-card);
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            box-shadow: var(--shadow-float);
+            font-weight: 600;
+            font-size: 0.95rem;
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .toast.error { background-color: var(--ffcam-red); color: white; }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        /* Utils */
+        .text-sm { font-size: 0.85rem; }
+        .text-muted { color: var(--text-muted); }
+        .italic { font-style: italic; }
+
+        /* ==========================================================================
+           IMPRESSION PDF - HAUTE FIDÉLITÉ
+           ========================================================================== */
+        @page {
+            size: A4 landscape;
+            margin: 12mm;
+        }
+
+        @media print {
+            /* Forcer le rendu propre des couleurs */
+            body, .card, .content-editable, input, table, th, td, .intro-text, .modal-content, .sticky-header {
+                background: #fff !important;
+                color: #000 !important;
+                box-shadow: none !important;
+                text-shadow: none !important;
+            }
+
+            /* Cacher l'interface non pertinente */
+            .no-print, .btn, .header-actions, .btn-expand, .modal-overlay, .toast {
+                display: none !important;
+            }
+
+            /* Reset structure page */
+            body { padding: 0 !important; }
+            .container { max-width: 100% !important; padding: 0 !important; }
+            .sticky-header {
+                position: static !important;
+                border-bottom: 2px solid #000 !important;
+                margin-bottom: 20px !important;
+                padding-bottom: 10px !important;
+            }
+            .brand-logo {
+                background: transparent !important;
+                padding: 0 !important;
+                height: 38px !important;
+            }
+
+            /* Logique Anti-coupure */
+            .card {
+                page-break-inside: avoid;
+                break-inside: avoid;
+                border: 1px solid #999 !important;
+                margin-bottom: 20px !important;
+                padding: 20px !important;
+            }
+
+            /* Expansion totale des zones de texte */
+            .content-editable {
+                max-height: none !important;
+                overflow: visible !important;
+                border: 1px solid #666 !important;
+                height: auto !important;
+                min-height: 40px !important;
+                padding: 10px !important;
+                page-break-inside: auto;
+            }
+
+            /* Tableaux */
+            .table-responsive {
+                border: none !important;
+                overflow: visible !important;
+            }
+            table, th, td { border: 1px solid #444 !important; }
+            th { background: #f0f0f0 !important; color: #000 !important; }
+            
+            /* Inputs normaux */
+            input[type="text"], input[type="number"], input[type="date"] {
+                border: 1px solid #666 !important;
+                background: transparent !important;
+            }
+
+            /* Maintenir les couleurs des badges et du logo */
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            .badge {
+                background: var(--ffcam-blue) !important;
+                color: white !important;
+            }
+            .brand-text-main { color: var(--ffcam-blue) !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STICKY HEADER AVEC LOGO -->
+    <header class="sticky-header no-print">
+        <div class="header-content">
+            <div class="brand">
+                <!-- Logo FFCAM (Image fournie en local). Se masque si l'image n'est pas dans le dossier -->
+                <img src="image.png" alt="Logo FFCAM" class="brand-logo" onerror="this.style.display='none'">
+                
+                <div class="brand-text">
+                    <span class="brand-text-main">FFCAM</span>
+                    <span class="brand-text-sub">Fédération Française des clubs alpins et de montagne</span>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary" id="themeToggleBtn" aria-label="Basculer le thème">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    Sombre
+                </button>
+                <button class="btn btn-primary" id="printBtn">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                    Imprimer
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Compte Rendu d'Incident ou d'Accident</h1>
+
+        <div class="intro-text">
+            <p>Ce document est à élaborer pour tout accident ou incident concernant un participant, en pratique collective ou individuelle. Merci de le transmettre à l’adresse : <a href="mailto:retex@ffcam.fr">retex@ffcam.fr</a></p>
+            <p>Il est indépendant d’une déclaration d'assurance. Son but est d'analyser les causes pour améliorer la prévention des risques.</p>
+            <p class="text-sm italic mt-2">Document de travail interne au club et à la fédération, servant de support à l’analyse de sécurité.</p>
+        </div>
+
+        <form id="incidentForm" onsubmit="event.preventDefault();">
+            
+            <!-- SECTION 1 : ACTIVITE -->
+            <section class="card">
+                <div class="card-header">
+                    <div class="badge">1</div>
+                    <h2>Informations générales</h2>
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="activite" class="required-label">L'activité pratiquée</label>
+                        <input type="text" id="activite" name="activite" placeholder="Ex: Alpinisme, Ski de rando, Escalade...">
+                    </div>
+                    <div class="form-group">
+                        <label class="required-label">S'agit-il d'un accident corporel ?</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="accident_corporel" value="oui">
+                                <span class="radio-custom"></span> Oui
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="accident_corporel" value="non">
+                                <span class="radio-custom"></span> Non
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2 : SORTIE -->
+            <section class="card">
+                <div class="card-header">
+                    <div class="badge">2</div>
+                    <h2>Renseignements sur la sortie</h2>
+                </div>
+                
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="date_sortie" class="required-label">Date de l'événement</label>
+                        <input type="date" id="date_sortie" name="date_sortie">
+                    </div>
+                    <div class="form-group">
+                        <label for="nb_participants">Nombre de participants</label>
+                        <input type="number" id="nb_participants" name="nb_participants" min="1" placeholder="Ex: 6">
+                    </div>
+                </div>
+
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label>La sortie était-elle encadrée ?</label>
+                        <div class="radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="sortie_encadree" value="oui">
+                                <span class="radio-custom"></span> Oui
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="sortie_encadree" value="non">
+                                <span class="radio-custom"></span> Non
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="nb_encadrants">Nombre d'encadrants</label>
+                        <input type="number" id="nb_encadrants" name="nb_encadrants" min="0" placeholder="Ex: 2">
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th style="width: 35%">Nom de l’encadrant / n° licence</th>
+                                <td><input type="text" id="encadrant_1" name="encadrant_1" aria-label="Nom de l'encadrant 1" placeholder="Encadrant principal"></td>
+                                <td><input type="text" id="encadrant_2" name="encadrant_2" aria-label="Nom de l'encadrant 2"></td>
+                            </tr>
+                            <tr>
+                                <th>Nom des co-encadrants</th>
+                                <td><input type="text" id="co_encadrant_1" name="co_encadrant_1" aria-label="Nom du co-encadrant 1"></td>
+                                <td><input type="text" id="co_encadrant_2" name="co_encadrant_2" aria-label="Nom du co-encadrant 2"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SECTION 3 : QUALIFICATIONS -->
+            <section class="card">
+                <div class="card-header">
+                    <div class="badge">3</div>
+                    <h2>Qualifications de l'encadrement</h2>
+                </div>
+                <p class="text-sm text-muted mb-4">Indiquez les brevets et dates d'obtention pour les encadrants ou personnes expérimentées.</p>
+                
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="qualif_1">Encadrant 1</label>
+                        <input type="text" id="qualif_1" name="qualif_1" placeholder="Brevet et date">
+                    </div>
+                    <div class="form-group">
+                        <label for="qualif_2">Encadrant 2</label>
+                        <input type="text" id="qualif_2" name="qualif_2">
+                    </div>
+                    <div class="form-group">
+                        <label for="qualif_3">Encadrant 3</label>
+                        <input type="text" id="qualif_3" name="qualif_3">
+                    </div>
+                    <div class="form-group">
+                        <label for="competition">Contexte compétition (si applicable)</label>
+                        <input type="text" id="competition" name="competition" placeholder="Nom de la compétition">
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4 : PERSONNES IMPLIQUEES -->
+            <section class="card">
+                <div class="card-header">
+                    <div class="badge">4</div>
+                    <h2>Personnes impliquées dans l'événement</h2>
+                </div>
+                
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width: 25%">Critères</th>
+                                <th style="width: 25%; text-align: center;">Personne I</th>
+                                <th style="width: 25%; text-align: center;">Personne II</th>
+                                <th style="width: 25%; text-align: center;">Personne III</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th class="text-muted">Niveau de pratique*</th>
+                                <td><input type="text" id="implique_niveau_1"></td>
+                                <td><input type="text" id="implique_niveau_2"></td>
+                                <td><input type="text" id="implique_niveau_3"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Âge</th>
+                                <td><input type="text" id="implique_age_1"></td>
+                                <td><input type="text" id="implique_age_2"></td>
+                                <td><input type="text" id="implique_age_3"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Qualifications éventuelles</th>
+                                <td><input type="text" id="implique_qualif_1"></td>
+                                <td><input type="text" id="implique_qualif_2"></td>
+                                <td><input type="text" id="implique_qualif_3"></td>
+                            </tr>
+                            <tr>
+                                <th class="text-muted">Années de pratique</th>
+                                <td><input type="text" id="implique_annees_1"></td>
+                                <td><input type="text" id="implique_annees_2"></td>
+                                <td><input type="text" id="implique_annees_3"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-sm text-muted italic mt-2">* Ex: débutant, confirmé, cadre breveté ou non breveté, compétiteur</p>
+            </section>
+
+            <!-- SECTION 5 : CONDITIONS DE SORTIE -->
+            <section class="card">
+                <div class="card-header">
+                    <div class="badge">5</div>
+                    <h2>Conditions de la sortie</h2>
+                </div>
+
+                <div class="form-group editable-wrapper">
+                    <label>Le site géographique</label>
+                    <button type="button" class="btn-expand no-print" data-target="site_desc">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg> Éditeur large
+                    </button>
+                    <div class="content-editable" id="site_desc" contenteditable="true" data-placeholder="Massif, nom de la voie, coordonnées GPS si utile..."></div>
+                </div>
+
+                <div class="form-group editable-wrapper">
+                    <label>Météorologie & Nivologie (facteurs significatifs)</label>
+                    <button type="button" class="btn-expand no-print" data-target="meteo_desc">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg> Éditeur large
+                    </button>
+                    <div class="content-editable" id="meteo_desc" contenteditable="true" data-placeholder="Température, vent, visibilité, BERA..."></div>
+                </div>
+
+                <div class="form-group editable-wrapper">
+                    <label>Fréquentation du moment</label>
+                    <button type="button" class="btn-expand no-print" data-target="freq_desc">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg> Éditeur large
+                    </button>
+                    <div class="content-editable" id="freq_desc" contenteditable="true" data-placeholder="Beaucoup de cordées, risque de chutes de pierres par des tiers..."></div>
+                </div>
+            </section>
+
+            <!-- SECTION 6 : EQUIPEMENT -->
+            <section class="card">
+                <div class="card-header">
+                    <div class="badge">6</div>
+                    <h2>Équipement et matériel</h2>
+                </div>
+                <div class="form-group editable-wrapper">
+                    <label>Le matériel était-il bien adapté et/ou bien utilisé ?</label>
+                    <button type="button" class="btn-expand no-print" data-target="equipement_desc">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg> Éditeur large
+                    </button>
+                    <div class="content-editable" id="equipement_desc" contenteditable="true" data-placeholder="Précisez tout problème lié au matériel (EPI, vêtements, communication)..."></div>
+                </div>
+            </section>
+
+            <!-- SECTION 7 : CIRCONSTANCES -->
+            <section class="card">
+                <div class="card-header">
+                    <div class="badge">7</div>
+                    <h2>Circonstances détaillées</h2>
+                </div>
+                <div class="form-group editable-wrapper">
+                    <label>Lieu précis, horaire, déroulement factuel...</label>
+                    <button type="button" class="btn-expand no-print" data-target="circonstances_desc">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg> Éditeur large
+                    </button>
+                    <div class="content-editable" id="circonstances_desc" style="min-height: 180px;" contenteditable="true" data-placeholder="Soyez le plus factuel possible dans la description chronologique de l'événement."></div>
+                </div>
+            </section>
+
+            <!-- SECTION 8 : BILAN ET SECOURS -->
+            <section class="card">
+                <div class="card-header">
+                    <div class="badge">8</div>
+                    <h2>Bilan et Secours</h2>
+                </div>
+
+                <div class="form-group editable-wrapper">
+                    <label>Constitution du groupe et place de la victime au moment de l’incident</label>
+                    <p class="text-sm text-muted mb-2">(ex: en tête, encordé, seul devant, serre-file etc…)</p>
+                    <button type="button" class="btn-expand no-print" data-target="groupe_desc">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg> Éditeur large
+                    </button>
+                    <div class="content-editable" id="groupe_desc" contenteditable="true"></div>
+                </div>
+
+                <div class="form-group editable-wrapper">
+                    <label>État de la victime / Conséquences physiques</label>
+                    <button type="button" class="btn-expand no-print" data-target="victime_desc">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg> Éditeur large
+                    </button>
+                    <div class="content-editable" id="victime_desc" contenteditable="true"></div>
+                </div>
+
+                <div class="form-group editable-wrapper">
+                    <label>Conditions de réalisation des secours</label>
+                    <button type="button" class="btn-expand no-print" data-target="secours_desc">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg> Éditeur large
+                    </button>
+                    <div class="content-editable" id="secours_desc" contenteditable="true" data-placeholder="Appel PGHM, réseau disponible, hélicoptère, auto-secours..."></div>
+                </div>
+
+                <div class="form-group editable-wrapper">
+                    <label>Éléments ayant joué un rôle déterminant</label>
+                    <button type="button" class="btn-expand no-print" data-target="determinants_desc">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg> Éditeur large
+                    </button>
+                    <div class="content-editable" id="determinants_desc" contenteditable="true" data-placeholder="Causes profondes, facteurs humains, techniques ou environnementaux..."></div>
+                </div>
+
+                <div class="form-group editable-wrapper">
+                    <label>Mesures correctives / Enseignements</label>
+                    <button type="button" class="btn-expand no-print" data-target="mesures_desc">
+                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg> Éditeur large
+                    </button>
+                    <div class="content-editable" id="mesures_desc" contenteditable="true" data-placeholder="Ce qu'il faut retenir pour éviter que cela ne se reproduise..."></div>
+                </div>
+            </section>
+        </form>
+    </div>
+
+    <!-- MODAL D'ÉDITION AGRANDIE -->
+    <div class="modal-overlay" id="editorModal" aria-modal="true" role="dialog">
+        <div class="modal-content">
+            <div class="modal-title" id="modalTitle">Édition de texte</div>
+            <textarea class="modal-textarea" id="modalTextarea" placeholder="Saisissez votre texte détaillé ici..."></textarea>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" id="modalCancelBtn">Annuler</button>
+                <button type="button" class="btn btn-primary" id="modalSaveBtn">Enregistrer les modifications</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div class="toast" id="toastMsg" role="alert">
+        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+        <span id="toastText">Action non autorisée.</span>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            /* --- GESTION DU THÈME SOMBRE --- */
+            const themeToggleBtn = document.getElementById('themeToggleBtn');
+            const currentTheme = localStorage.getItem('ffcam-theme');
+            
+            const iconSun = '<svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg> Clair';
+            const iconMoon = '<svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg> Sombre';
+
+            if (currentTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+                themeToggleBtn.innerHTML = iconSun;
+            }
+
+            themeToggleBtn.addEventListener('click', () => {
+                document.body.classList.toggle('dark-mode');
+                if (document.body.classList.contains('dark-mode')) {
+                    localStorage.setItem('ffcam-theme', 'dark');
+                    themeToggleBtn.innerHTML = iconSun;
+                } else {
+                    localStorage.setItem('ffcam-theme', 'light');
+                    themeToggleBtn.innerHTML = iconMoon;
+                }
+            });
+
+            /* --- SYSTÈME DE TOAST --- */
+            const toast = document.getElementById('toastMsg');
+            const toastText = document.getElementById('toastText');
+            let toastTimeout;
+            
+            function showToast(message, isError = false) {
+                toastText.textContent = message;
+                if (isError) toast.classList.add('error');
+                else toast.classList.remove('error');
+                
+                toast.classList.add('show');
+                clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('show');
+                }, 3500);
+            }
+
+            /* --- PRÉVENTION COLLAGE IMAGE --- */
+            const editableZones = document.querySelectorAll('.content-editable');
+            editableZones.forEach(zone => {
+                zone.addEventListener('paste', (e) => {
+                    const clipboardData = e.clipboardData || window.clipboardData;
+                    const items = clipboardData.items;
+                    let hasImage = false;
+
+                    for (let i = 0; i < items.length; i++) {
+                        if (items[i].type.indexOf('image') !== -1) {
+                            hasImage = true;
+                            break;
+                        }
+                    }
+
+                    if (hasImage) {
+                        e.preventDefault();
+                        showToast("L'insertion d'images n'est pas supportée dans ce formulaire.", true);
+                    } else {
+                        // Nettoyer le HTML collé pour n'avoir que du texte brut stylisé proprement
+                        e.preventDefault();
+                        const text = clipboardData.getData('text/plain');
+                        document.execCommand('insertText', false, text);
+                    }
+                });
+            });
+
+            /* --- NAVIGATION CLAVIER (Enter = Champ suivant) --- */
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && e.target.tagName === 'INPUT' && 
+                   (e.target.type === 'text' || e.target.type === 'number' || e.target.type === 'date')) {
+                    e.preventDefault();
+                    
+                    const focusableSelectors = 'input:not([type="hidden"]):not([disabled]), .content-editable';
+                    const focusableElements = Array.from(document.querySelectorAll(focusableSelectors))
+                        .filter(el => el.tabIndex >= 0 && el.offsetHeight > 0);
+                    
+                    const index = focusableElements.indexOf(e.target);
+                    if (index > -1 && index < focusableElements.length - 1) {
+                        focusableElements[index + 1].focus();
+                    }
+                }
+            });
+
+            /* --- GESTION DE LA MODALE D'ÉDITION --- */
+            const modal = document.getElementById('editorModal');
+            const modalTextarea = document.getElementById('modalTextarea');
+            const modalCancelBtn = document.getElementById('modalCancelBtn');
+            const modalSaveBtn = document.getElementById('modalSaveBtn');
+            const modalTitle = document.getElementById('modalTitle');
+            let currentEditingZone = null;
+
+            document.querySelectorAll('.btn-expand').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetId = btn.getAttribute('data-target');
+                    currentEditingZone = document.getElementById(targetId);
+                    
+                    if (currentEditingZone) {
+                        // Récupération propre du texte
+                        let content = currentEditingZone.innerHTML;
+                        content = content.replace(/<br\s*[\/]?>/gi, '\n');
+                        content = content.replace(/<\/div>/gi, '\n');
+                        content = content.replace(/<p>/gi, '').replace(/<\/p>/gi, '\n');
+                        content = content.replace(/<[^>]+>/g, ''); 
+                        
+                        // Décodage des entités HTML simples
+                        const txt = document.createElement("textarea");
+                        txt.innerHTML = content;
+                        modalTextarea.value = txt.value;
+                        
+                        const label = btn.parentElement.querySelector('label');
+                        modalTitle.textContent = label ? label.textContent : 'Édition approfondie';
+                        
+                        modal.classList.add('active');
+                        setTimeout(() => modalTextarea.focus(), 150); // Attendre l'animation
+                    }
+                });
+            });
+
+            function closeModal() {
+                modal.classList.remove('active');
+                currentEditingZone = null;
+            }
+
+            modalCancelBtn.addEventListener('click', closeModal);
+            
+            modalSaveBtn.addEventListener('click', () => {
+                if (currentEditingZone) {
+                    const formattedText = modalTextarea.value
+                        .replace(/&/g, "&amp;")
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(/\n/g, "<br>");
+                    
+                    currentEditingZone.innerHTML = formattedText;
+                }
+                closeModal();
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    closeModal();
+                }
+            });
+
+            /* --- LOGIQUE D'IMPRESSION ULTRA FIABLE --- */
+            const printBtn = document.getElementById('printBtn');
+            
+            function prepareAndPrint() {
+                if (!window.print) {
+                    showToast("Votre navigateur ne supporte pas l'impression JS.", true);
+                    return;
+                }
+
+                // 1. Forcer la hauteur des éléments contenteditable pour tout afficher
+                document.querySelectorAll('.content-editable').forEach(el => {
+                    el.style.height = 'auto';
+                    el.style.minHeight = el.scrollHeight + 'px';
+                });
+
+                // 2. Désactiver temporairement le Dark Mode pour l'impression (sauvegarde)
+                const wasDarkMode = document.body.classList.contains('dark-mode');
+                if (wasDarkMode) document.body.classList.remove('dark-mode');
+
+                // 3. Lancer l'impression
+                setTimeout(() => window.print(), 200);
+
+                // 4. Restaurer les états APRES l'impression (via évènement garanti du navigateur)
+                window.addEventListener('afterprint', function cleanupPrint() {
+                    if (wasDarkMode) document.body.classList.add('dark-mode');
+                    document.querySelectorAll('.content-editable').forEach(el => {
+                        el.style.height = '';
+                        el.style.minHeight = '';
+                    });
+                    window.removeEventListener('afterprint', cleanupPrint);
+                });
+            }
+
+            printBtn.addEventListener('click', prepareAndPrint);
+        });
+    </script>
+</body>
+</html>
